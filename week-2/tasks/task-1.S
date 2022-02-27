@@ -1,14 +1,7 @@
 .syntax unified
 .global main
 
-.type main, %function
 main:
-  nop
-  ldr r0, =hello
-
-  b main
-.size main, .-main
-
-.data
-hello:
-.word 0x424242
+  movs r0, 2
+  adds r0, 2
+  movs r1, r0
