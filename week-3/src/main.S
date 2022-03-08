@@ -3,12 +3,16 @@
 
 .type main, %function
 main:
-  nop
-  ldr r0, =hello
+  @ b task_3
 
-  b main
+  @ Your code goes here
+  mov r0, 100
+@ a simple infinite loop
+end_loop:
+  nop
+  b end_loop
 .size main, .-main
 
-.data
-hello:
-.word 0x424242
+@ a place for your to complete task 3. uncomment line 6 when you're ready to start working on it!
+@ task_3:
+@ ...
