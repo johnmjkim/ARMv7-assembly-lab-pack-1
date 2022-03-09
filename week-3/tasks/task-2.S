@@ -6,11 +6,11 @@ main:
   @ b task_3
 
   @ Your code goes here
-  mov r0, 100
+  mov r0, #100
 @ a simple infinite loop
 end_loop:
   nop
-  add r0, r0, 50
+  add r0, r0, #50
   b end_loop
 .size main, .-main
 

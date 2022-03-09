@@ -6,7 +6,7 @@ main:
   @ b task_3
 
   @ Your code goes here
-  mov r0, 100
+  mov r0, #100
 @ a simple infinite loop
 end_loop:
   nop
