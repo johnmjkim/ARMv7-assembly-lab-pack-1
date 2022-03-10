@@ -10,10 +10,15 @@ main:
   ldr r1, cope
 
   @ fill in the rest of the instructions here!
-  add r1, 5
-  mov r2, r1
-  add r1, 9
-  mov r3, r1
+  @ COPE -> 0b 0100 0101 0101 0000 0100 1111 0100 0011
+  @ HOPE -> 0b 0100 0101 0101 0000 0100 1111 0100 1000
+  @ HOPS -> 0b 0101 0011 0101 0000 0100 1111 0100 1000
+  @ make "cope" -> "hope"
+  add r2, r1, 5
+  @ make "hope" -> "hops"
+  mov r3, 14
+  lsl r3, 24
+  add r3, r2, r3
 
 loop:
   nop
