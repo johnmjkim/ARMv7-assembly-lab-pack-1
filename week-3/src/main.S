@@ -13,10 +13,7 @@ end_loop:
   nop
   @ My pokemon heals HP by 50 infinitely
   add r0, r0, #50
-  @ My pokemon attacks enemy HP by 50 infinitely
-  subs r1, #50
-  @ begin with branch pokemon_wins
-  b pokemon_wins
+  b pokemon_attack
   b end_loop
 .size main, .-main
 
@@ -35,17 +32,46 @@ task_3:
   adds r0, 1
   b end_loop
 
+@ branch for pokemon attack
+pokemon_attack:
+  @ My pokemon attacks enemy HP by 40
+  subs r1, #40
+  @ begin with branch pokemon_wins
+  b pokemon_wins
+
 @ conditional branch for pokemon wins
 pokemon_wins:
   @ r1 is less than zero
   @ infinite loop of pokemon_wins
   bmi pokemon_wins
   @ r1 is zero or larger
-  bpl checkzero
+  bpl pokemon_checkzero
 
-checkzero:
+pokemon_checkzero:
   mov r2, 0
-  @ r1 is zero by comparing r2 = 0 and r1 is equal or not 
+  @ current register is zero by comparing r2 = 0 and current register is equal or not 
   beq pokemon_wins
-  @ r1 is larger than zero
+  @ current register is larger than zero
+  bne enemy_attack
+
+@ branch for enemy attack
+enemy_attack:
+  @ My enemy attacks my pokemon HP by 100
+  subs r0, #100
+  @ begin with branch enemy_wins
+  b enemy_wins
+
+@ conditional branch for enemy wins
+enemy_wins:
+  @ r0 is less than zero
+  @ infinite loop of pokemon_wins
+  bmi enemy_wins
+  @ r0 is zero or larger
+  bpl enemy_checkzero
+
+enemy_checkzero:
+  mov r2, 0
+  @ current register is zero by comparing r2 = 0 and current register is equal or not 
+  beq enemy_wins
+  @ current register is larger than zero
   bne end_loop
