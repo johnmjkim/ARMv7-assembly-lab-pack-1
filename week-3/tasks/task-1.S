@@ -5,7 +5,7 @@
 main:
   @ b task_3
 
-  @ Your code goes here
+  @ My pokemon starts with HP 100
   mov r0, #100
 @ a simple infinite loop
 end_loop:

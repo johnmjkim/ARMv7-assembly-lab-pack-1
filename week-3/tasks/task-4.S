@@ -3,15 +3,19 @@
 
 .type main, %function
 main:
+  @ begin with branch task 3
   @ b task_3
-  @ Your code goes here
+  @ Both enemy and my pokemon starts with 100 HP
   mov r0, #100
   mov r1, #100
 @ a simple infinite loop
 end_loop:
   nop
+  @ My pokemon heals HP by 50 infinitely
   add r0, r0, #50
+  @ My pokemon attacks enemy HP by 50 infinitely
   subs r1, #50
+  @ begin with branch pokemon_wins
   b pokemon_wins
   b end_loop
 .size main, .-main
@@ -31,8 +35,17 @@ task_3:
   adds r0, 1
   b end_loop
 
+@ conditional branch for pokemon wins
 pokemon_wins:
-  movs r2, r1
-  subs r2, 1
-  bpl end_loop
+  @ r1 is less than zero
+  @ infinite loop of pokemon_wins
   bmi pokemon_wins
+  @ r1 is zero or larger
+  bpl checkzero
+
+checkzero:
+  mov r2, 0
+  @ r1 is zero by comparing r2 = 0 and r1 is equal or not 
+  beq pokemon_wins
+  @ r1 is larger than zero
+  bne end_loop
