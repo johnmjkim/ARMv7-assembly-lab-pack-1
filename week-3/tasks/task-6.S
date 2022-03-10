@@ -10,11 +10,11 @@ main:
   @ if r1 is negative, enemy turn
   mov r1, 1
   @ Initial HP/strength my pokemon
-  mov r2, #40
-  mov r3, #10
+  mov r2, #150
+  mov r3, #40
   @ Initial HP/strength of enemy
-  mov r4, #40
-  mov r5, #10
+  mov r4, #150
+  mov r5, #40
   @ action mode of my pokemon
   @ if r6 is positive attacks fireball/frenzy/magic_poison
   @ if r6 is negative use strength_from_weariness/eye_of_Zardok 
@@ -44,12 +44,13 @@ my_pokemon_attack:
   @ sub r4, 20
 
   @ frenzy
-  add r5, 10
-  sub r4, 30
+  @ add r5, 10
+  @ sub r4, 30
 
   @ magic poison
-  @ sub r4, r3
-  @ sub r4, r3
+  mov r9, 2
+  mul r8, r3, r9
+  sub r4, r8
 
   mov r6, -1
   mov r1, -1
@@ -57,12 +58,24 @@ my_pokemon_attack:
 
 my_pokemon_action:
   @ strength_from_weariness
-  mov r8, r2
-  sub r8, r2, r3
-  @ sdiv r9, r8, 20
+  @ sub r8, r2, r3 @ hp-strength
+  @ mul r9, r8, r8 @ (hp-strength)^2
+  @ mov r10, 400 @ 20^2
+  @ sdiv r10, r9, r10 @(hp-strength)^2/20^2
+  @ add r2, r10 @ hp = hp + ((hp-strength)/20)^2
 
   @eye_of_Zordak
+  mul r8, r2, r3 @ hp * strength
+  mov r9, 100
+  sdiv r10, r8, r9 @ hp * strength / 100
 
+  mul r8, r3, r3 @ strength^2
+  mul r8, r8, r3 @ strength^3
+
+  mov r9, 4096 @ 16^3
+  sdiv r11, r8, r9 @ (strength)^3/(16)^3
+  sub r2, r2, r11 @ hp = hp - (strength/16)^3
+  mov r3, r10 @ strength = hp * strength / 100
 
   mov r6, 1
   mov r1, -1
@@ -84,21 +97,42 @@ my_enemy:
 
 my_enemy_attack:
   @ fireball
-  sub r2, 20
+  @ sub r2, 20
 
   @ frenzy
   @ add r3, 10
   @ sub r2, 30
 
   @ magic poison
-  sub r2, r5
-  sub r2, r5
+  mov r9, 2
+  mul r8, r5, r9
+  sub r2, r8
 
   mov r7, -1
   mov r1, 1
   b my_enemy_wins
 
 my_enemy_action:
+  @ strength_from_weariness
+  sub r8, r4, r5 @ hp-strength
+  mul r9, r8, r8 @ (hp-strength)^2
+  mov r10, 400 @ 20^2
+  sdiv r10, r9, r10 @(hp-strength)^2/20^2
+  add r4, r10 @ hp = hp + ((hp-strength)/20)^2
+
+  @eye_of_Zordak
+  @ mul r8, r4, r5 @ hp * strength
+  @ mov r9, 100
+  @ sdiv r10, r8, r9 @ hp * strength / 100
+
+  @ mul r8, r5, r5 @ strength^2
+  @ mul r8, r8, r5 @ strength^3
+
+  @ mov r9, 4096 @ 16^3
+  @ sdiv r11, r8, r9 @ (strength)^3/(16)^3
+  @ sub r4, r4, r11 @ hp = hp - (strength/16)^3
+  @ mov r5, r10 @ strength = hp * strength / 100
+
   mov r7, 1
   mov r1, 1
   b my_pokemon_wins
