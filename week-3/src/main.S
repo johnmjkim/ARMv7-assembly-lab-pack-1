@@ -3,75 +3,111 @@
 
 .type main, %function
 main:
-  @ begin with branch task 3
-  @ b task_3
-  @ Both enemy and my pokemon starts with 100 HP
-  mov r0, #100
-  mov r1, #100
-@ a simple infinite loop
+  @ store r0 as zero
+  mov r0, 0
+  @ turn of action
+  @ if r1 is positive, my pokemon turn
+  @ if r1 is negative, enemy turn
+  mov r1, 1
+  @ Initial HP/strength my pokemon
+  mov r2, #40
+  mov r3, #10
+  @ Initial HP/strength of enemy
+  mov r4, #40
+  mov r5, #10
+  @ action mode of my pokemon
+  @ if r6 is positive attacks fireball/frenzy/magic_poison
+  @ if r6 is negative use strength_from_weariness/eye_of_Zardok 
+  mov r6, -1
+  @ action mode of my enemy
+  @ if r7 is positive attacks fireball/frenzy/magic_poison
+  @ if r7 is negative use strength_from_weariness/eye_of_Zardok 
+  mov r7, 1
+  @ a simple infinite loop
+  @ set the turn
+  movs r1, 1
 end_loop:
   nop
-  @ My pokemon heals HP by 50 infinitely
-  add r0, r0, #50
-  b pokemon_attack
+  movs r1, r1
+  bpl my_pokemon
+  bmi my_enemy
   b end_loop
 .size main, .-main
 
-@ a place for your to complete task 3. uncomment line 6 when you're ready to start working on it!
-task_3:
-  @ set the negative flag
-  movs r0, -1
+my_pokemon:
+  movs r6, r6
+  bpl my_pokemon_attack
+  bmi my_pokemon_action
 
-  @ set the zero flag
-  adds r0, 1
+my_pokemon_attack:
+  @ fireball
+  @ sub r4, 20
 
-  @ set the carry flag
-  movs r0, 0x7fffffff
+  @ frenzy
+  add r5, 10
+  sub r4, 30
 
-  @ set the overflow flag
-  adds r0, 1
+  @ magic poison
+  @ sub r4, r3
+  @ sub r4, r3
+
+  mov r6, -1
+  mov r1, -1
+  b my_pokemon_wins
+
+my_pokemon_action:
+  @ strength_from_weariness
+  mov r8, r2
+  sub r8, r2, r3
+  @ sdiv r9, r8, 20
+
+  @eye_of_Zordak
+
+
+  mov r6, 1
+  mov r1, -1
+  b my_enemy_wins
+
+my_pokemon_wins:
+  nop
+  movs r0, r0
+  movs r4, r4
+  bmi my_pokemon_wins
+  beq my_pokemon_wins
+
   b end_loop
 
-@ branch for pokemon attack
-pokemon_attack:
-  @ My pokemon attacks enemy HP by 40
-  subs r1, #40
-  @ begin with branch pokemon_wins
-  b pokemon_wins
+my_enemy:
+  movs r7, r7
+  bpl my_enemy_attack
+  bmi my_enemy_action
 
-@ conditional branch for pokemon wins
-pokemon_wins:
-  @ r1 is less than zero
-  @ infinite loop of pokemon_wins
-  bmi pokemon_wins
-  @ r1 is zero or larger
-  bpl pokemon_checkzero
+my_enemy_attack:
+  @ fireball
+  sub r2, 20
 
-pokemon_checkzero:
-  mov r2, 0
-  @ current register is zero by comparing r2 = 0 and current register is equal or not 
-  beq pokemon_wins
-  @ current register is larger than zero
-  bne enemy_attack
+  @ frenzy
+  @ add r3, 10
+  @ sub r2, 30
 
-@ branch for enemy attack
-enemy_attack:
-  @ My enemy attacks my pokemon HP by 100
-  subs r0, #100
-  @ begin with branch enemy_wins
-  b enemy_wins
+  @ magic poison
+  sub r2, r5
+  sub r2, r5
 
-@ conditional branch for enemy wins
-enemy_wins:
-  @ r0 is less than zero
-  @ infinite loop of pokemon_wins
-  bmi enemy_wins
-  @ r0 is zero or larger
-  bpl enemy_checkzero
+  mov r7, -1
+  mov r1, 1
+  b my_enemy_wins
 
-enemy_checkzero:
-  mov r2, 0
-  @ current register is zero by comparing r2 = 0 and current register is equal or not 
-  beq enemy_wins
-  @ current register is larger than zero
-  bne end_loop
+my_enemy_action:
+  mov r7, 1
+  mov r1, 1
+  b my_pokemon_wins
+
+my_enemy_wins:
+  nop
+  movs r0, r0
+  movs r2, r2
+  bmi my_enemy_wins
+  beq my_enemy_wins
+
+  b end_loop

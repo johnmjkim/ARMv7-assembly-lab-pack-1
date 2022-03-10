@@ -17,21 +17,6 @@ end_loop:
   b end_loop
 .size main, .-main
 
-@ a place for your to complete task 3. uncomment line 6 when you're ready to start working on it!
-task_3:
-  @ set the negative flag
-  movs r0, -1
-
-  @ set the zero flag
-  adds r0, 1
-
-  @ set the carry flag
-  movs r0, 0x7fffffff
-
-  @ set the overflow flag
-  adds r0, 1
-  b end_loop
-
 @ branch for pokemon attack
 pokemon_attack:
   @ My pokemon attacks enemy HP by 40
@@ -75,3 +60,20 @@ enemy_checkzero:
   beq enemy_wins
   @ current register is larger than zero
   bne end_loop
+
+
+@ a place for your to complete task 3. uncomment line 6 when you're ready to start working on it!
+task_3:
+  @ set the negative flag
+  movs r0, -1
+
+  @ set the zero flag
+  adds r0, 1
+
+  @ set the carry flag
+  movs r0, 0x7fffffff
+
+  @ set the overflow flag
+  adds r0, 1
+  b end_loop
+
