@@ -21,12 +21,14 @@ task_3:
   movs r0, -1
 
   @ set the zero flag
-  adds r0, 1
+  movs r0, 0
 
   @ set the carry flag
-  movs r0, 0x7fffffff
+  movs r0, -2
+  adds r0, 3
 
   @ set the overflow flag
+  movs r0, 0x7fffffff
   adds r0, 1
 
   b end_loop
