@@ -12,6 +12,8 @@ main:
   .hword 0xf1a1
   .hword 0x0101
   @ 2 16-bit instruction
+  @ .hword 0x2103 @ 0b0010000100000011
+  @ .hword 0x3901 @ 0b0011100100000001
   
   b main
 .size main, .-main
